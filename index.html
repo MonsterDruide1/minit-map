@@ -1,21 +1,39 @@
 <html>
 <head>
 <script>
-function generateRomMap() {
+let currentMap = -1;
+function toggleMap() {
+  currentMap++;
+  if(currentMap >= 2) currentMap = 0;
+  switch(currentMap) {
+    case 0:
+      generateMap('rom', 3, 6, 16, 16);
+      break;
+    case 1:
+      generateMap('dun', 3, 6, 16, 16); //proper iMin=6, proper jMin=7 ; values currently used for alignment
+      break;
+  }
+}
+function failedLoad() {
+  console.log("error");
+}
+function generateMap(name, iMin, jMin, iMax, jMax) {
   var table = document.getElementById("table");
-  for(var i = 3 ; i <= 16 ; i++) {
+  table.innerHTML = "";
+  for(var i = iMin ; i <= iMax ; i++) {
     var tr = table.insertRow();
-    for(var j = 6; j <= 16 ; j++) {
+    for(var j = jMin; j <= jMax ; j++) {
       var td = tr.insertCell();
       var img = document.createElement("img");
-      img.src = "images/rom/rom"+j+"_"+i+".png";
+      img.onerror = "console.log('test', this);";
+      img.addEventListener('error', (e)=>{e.target.src = "images/empty.png";});
+      img.src = "images/"+name+"/"+name+j+"_"+i+".png";
       td.appendChild(img);
     }
   }
 }
 </script>
 </head>
-<body style="margin: 0; background-color: black;" onload="generateRomMap()">
+<body style="margin: 0; background-color: black;" onclick="toggleMap()" onload="toggleMap()">
 <table border="0" cellpadding="0" cellspacing="0" margin="0" id="table"/>
 </body></html>
-
