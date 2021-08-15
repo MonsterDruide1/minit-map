@@ -4,13 +4,16 @@
 let currentMap = -1;
 function toggleMap() {
   currentMap++;
-  if(currentMap >= 2) currentMap = 0;
+  if(currentMap >= 3) currentMap = 0;
   switch(currentMap) {
     case 0:
-      generateMap('rom', 3, 6, 16, 16);
+      generateMap('rom', 3, 6, 16, 16); //this one is the biggest, so match all others to this size
       break;
     case 1:
-      generateMap('dun', 3, 6, 16, 16); //proper iMin=6, proper jMin=7 ; values currently used for alignment
+      generateMap('dun', 3, 6, 16, 16);
+      break;
+    case 2:
+      generateMap('hom', 3, 6, 16, 16);
       break;
   }
 }
