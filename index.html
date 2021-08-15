@@ -1,0 +1,21 @@
+<html>
+<head>
+<script>
+function generateRomMap() {
+  var table = document.getElementById("table");
+  for(var i = 3 ; i <= 16 ; i++) {
+    var tr = table.insertRow();
+    for(var j = 6; j <= 16 ; j++) {
+      var td = tr.insertCell();
+      var img = document.createElement("img");
+      img.src = "images/rom/rom"+j+"_"+i+".png";
+      td.appendChild(img);
+    }
+  }
+}
+</script>
+</head>
+<body style="margin: 0; background-color: black;" onload="generateRomMap()">
+<table border="0" cellpadding="0" cellspacing="0" margin="0" id="table"/>
+</body></html>
+
