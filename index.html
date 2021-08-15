@@ -7,36 +7,42 @@ function toggleMap() {
   if(currentMap >= 3) currentMap = 0;
   switch(currentMap) {
     case 0:
-      generateMap('rom', 3, 6, 16, 16); //this one is the biggest, so match all others to this size
+      drawMap('rom'); //this one is the biggest, so match all others to this size
       break;
     case 1:
-      generateMap('dun', 3, 6, 16, 16);
+      drawMap('dun');
       break;
     case 2:
-      generateMap('hom', 3, 6, 16, 16);
+      drawMap('hom');
       break;
   }
 }
-function failedLoad() {
-  console.log("error");
+function drawMap(name) {
+  var imgs = document.getElementsByTagName("img");
+  for(var index=0; index < imgs.length; index++) {
+    var img = imgs[index];
+    var i = img.getAttribute('i');
+    var j = img.getAttribute('j');
+    img.src = "images/"+name+"/"+name+j+"_"+i+".png";
+  }
 }
-function generateMap(name, iMin, jMin, iMax, jMax) {
+function generateMap(iMin, jMin, iMax, jMax) {
   var table = document.getElementById("table");
-  table.innerHTML = "";
   for(var i = iMin ; i <= iMax ; i++) {
     var tr = table.insertRow();
     for(var j = jMin; j <= jMax ; j++) {
       var td = tr.insertCell();
       var img = document.createElement("img");
-      img.onerror = "console.log('test', this);";
+      img.setAttribute('i', i);
+      img.setAttribute('j', j);
       img.addEventListener('error', (e)=>{e.target.src = "images/empty.png";});
-      img.src = "images/"+name+"/"+name+j+"_"+i+".png";
       td.appendChild(img);
     }
   }
+  toggleMap();
 }
 </script>
 </head>
-<body style="margin: 0; background-color: black;" onclick="toggleMap()" onload="toggleMap()">
+<body style="margin: 0; background-color: black;" onclick="toggleMap()" onload="generateMap(3, 6, 16, 16)">
 <table border="0" cellpadding="0" cellspacing="0" margin="0" id="table"/>
 </body></html>
