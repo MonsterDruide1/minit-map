@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="index.css"/>
 <script>
 let showBorders = false;
-let currentMap = -1;
 
 function executeIfFileExist(src, existsCallback, failedCallback) {
     var xhr = new XMLHttpRequest();
@@ -28,22 +27,14 @@ function readJSONFile(file) {
   return JSON.parse(xhr.responseText);
 }
 
-function toggleMap() {
-  currentMap++;
-  if(currentMap >= 3) currentMap = 0;
-  switch(currentMap) {
-    case 0:
-      drawMap('rom'); //this one is the biggest, so match all others to this size
-      break;
-    case 1:
-      drawMap('dun');
-      break;
-    case 2:
-      drawMap('hom');
-      break;
-  }
-}
 function drawMap(name) {
+  var activeNavBars = document.getElementsByClassName("navbaractive");
+  while(activeNavBars.length > 0) {
+    activeNavBars[0].classList.remove("navbaractive");
+  }
+  var activeNav = document.getElementById("nav"+name);
+  activeNav.classList.add("navbaractive");
+
   let json = readJSONFile("data/"+name+".json");
   var tds = document.getElementsByTagName("td");
   for(var index=0; index < tds.length; index++) {
@@ -84,7 +75,6 @@ function drawMap(name) {
   }
 }
 function generateMap(yMin, xMin, yMax, xMax) {
-  document.body.addEventListener('click', () => {toggleMap();});
   var table = document.getElementById("table");
   table.style.width = ((xMax-xMin+1)*320)+"px";
   for(var y = yMin ; y <= yMax ; y++) {
@@ -97,10 +87,14 @@ function generateMap(yMin, xMin, yMax, xMax) {
       td.appendChild(img);
     }
   }
-  toggleMap();
 }
 </script>
 </head>
-<body onload="generateMap(3, 6, 16, 16)">
+<body onload="generateMap(3, 6, 16, 16);drawMap('rom');">
+<div class="topnav">
+  <a href="#" id="navrom" onclick="drawMap('rom');return false;">ROM</a>
+  <a href="#" id="navdun" onclick="drawMap('dun');return false;">DUN</a>
+  <a href="#" id="navhom" onclick="drawMap('hom');return false;">HOM</a>
+</div>
 <table border="0" cellpadding="0" cellspacing="0" margin="0" id="table"/>
 </body></html>
