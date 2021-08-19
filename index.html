@@ -5,6 +5,21 @@
 <script>
 let showBorders = false;
 let currentMap = -1;
+
+function executeIfFileExist(src, existsCallback, failedCallback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (this.readyState === this.DONE) {
+            if(this.status === 200)
+                existsCallback();
+            else
+                failedCallback();
+        }
+    };
+    xhr.open('HEAD', src);
+    xhr.send();
+}
+
 function toggleMap() {
   currentMap++;
   if(currentMap >= 3) currentMap = 0;
@@ -23,14 +38,17 @@ function toggleMap() {
 function drawMap(name) {
   var tds = document.getElementsByTagName("td");
   for(var index=0; index < tds.length; index++) {
-    var td = tds[index];
-    var i = td.getAttribute('i');
-    var j = td.getAttribute('j');
-    td.firstChild.src = "images/"+name+"/"+name+"_"+j+"_"+i+".png";
+    let td = tds[index];
+    let i = td.getAttribute('i');
+    let j = td.getAttribute('j');
+    let url = "images/"+name+"/"+name+"_"+j+"_"+i+".png";
+    executeIfFileExist(url, ()=>{td.firstChild.src = url;}, ()=>{td.firstChild.src = "images/empty.png";});
   }
 }
 function generateMap(iMin, jMin, iMax, jMax) {
+  document.body.addEventListener('click', () => {toggleMap();});
   var table = document.getElementById("table");
+  table.style.width = ((jMax-jMin+1)*320)+"px";
   for(var i = iMin ; i <= iMax ; i++) {
     var tr = table.insertRow();
     for(var j = jMin; j <= jMax ; j++) {
@@ -38,7 +56,6 @@ function generateMap(iMin, jMin, iMax, jMax) {
       td.setAttribute('i', i);
       td.setAttribute('j', j);
       var img = document.createElement("img");
-      img.addEventListener('error', (e)=>{e.target.src = "images/empty.png";});
       td.appendChild(img);
 
       if(i == 10 && j == 10) {
@@ -60,6 +77,6 @@ function generateMap(iMin, jMin, iMax, jMax) {
 }
 </script>
 </head>
-<body onclick="toggleMap()" onload="generateMap(3, 6, 16, 16)">
+<body onload="generateMap(3, 6, 16, 16)">
 <table border="0" cellpadding="0" cellspacing="0" margin="0" id="table"/>
 </body></html>
