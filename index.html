@@ -18,12 +18,12 @@ function toggleMap() {
   }
 }
 function drawMap(name) {
-  var imgs = document.getElementsByTagName("img");
-  for(var index=0; index < imgs.length; index++) {
-    var img = imgs[index];
-    var i = img.getAttribute('i');
-    var j = img.getAttribute('j');
-    img.src = "images/"+name+"/"+name+"_"+j+"_"+i+".png";
+  var divs = document.getElementsByTagName("div");
+  for(var index=0; index < divs.length; index++) {
+    var div = divs[index];
+    var i = div.getAttribute('i');
+    var j = div.getAttribute('j');
+    div.firstChild.src = "images/"+name+"/"+name+"_"+j+"_"+i+".png";
   }
 }
 function generateMap(iMin, jMin, iMax, jMax) {
@@ -32,11 +32,16 @@ function generateMap(iMin, jMin, iMax, jMax) {
     var tr = table.insertRow();
     for(var j = jMin; j <= jMax ; j++) {
       var td = tr.insertCell();
+      var div = document.createElement("div");
+      div.setAttribute('i', i);
+      div.setAttribute('j', j);
       var img = document.createElement("img");
-      img.setAttribute('i', i);
-      img.setAttribute('j', j);
       img.addEventListener('error', (e)=>{e.target.src = "images/empty.png";});
-      td.appendChild(img);
+      div.appendChild(img);
+
+      td.setAttribute("height", "240");
+      td.setAttribute("width", "320");
+      td.appendChild(div);
     }
   }
   toggleMap();
