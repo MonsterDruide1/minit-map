@@ -1,6 +1,9 @@
+<!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="index.css"/>
 <script>
+let showBorders = false;
 let currentMap = -1;
 function toggleMap() {
   currentMap++;
@@ -18,12 +21,12 @@ function toggleMap() {
   }
 }
 function drawMap(name) {
-  var divs = document.getElementsByTagName("div");
-  for(var index=0; index < divs.length; index++) {
-    var div = divs[index];
-    var i = div.getAttribute('i');
-    var j = div.getAttribute('j');
-    div.firstChild.src = "images/"+name+"/"+name+"_"+j+"_"+i+".png";
+  var tds = document.getElementsByTagName("td");
+  for(var index=0; index < tds.length; index++) {
+    var td = tds[index];
+    var i = td.getAttribute('i');
+    var j = td.getAttribute('j');
+    td.firstChild.src = "images/"+name+"/"+name+"_"+j+"_"+i+".png";
   }
 }
 function generateMap(iMin, jMin, iMax, jMax) {
@@ -32,22 +35,31 @@ function generateMap(iMin, jMin, iMax, jMax) {
     var tr = table.insertRow();
     for(var j = jMin; j <= jMax ; j++) {
       var td = tr.insertCell();
-      var div = document.createElement("div");
-      div.setAttribute('i', i);
-      div.setAttribute('j', j);
+      td.setAttribute('i', i);
+      td.setAttribute('j', j);
       var img = document.createElement("img");
       img.addEventListener('error', (e)=>{e.target.src = "images/empty.png";});
-      div.appendChild(img);
+      td.appendChild(img);
 
-      td.setAttribute("height", "240");
-      td.setAttribute("width", "320");
-      td.appendChild(div);
+      if(i == 10 && j == 10) {
+        var innerdiv = document.createElement("div");
+        innerdiv.setAttribute("style", "position:absolute;left:95px;top:80px;width:110px;height:80px;"+(showBorders?"border:red;border-style:solid;border-width:2px;":""));
+
+        var title = document.createElement("p");
+        title.setAttribute("class", "tooltiptext");
+        title.innerHTML = "Starting house";
+        title.style.bottom = 80+(showBorders?2:0)+5+5+"px"; //80 from height, 2 from possible borders, 5 from arrow pointing downwards (::after), 5 for some space
+        innerdiv.setAttribute("class", "tooltip");
+
+        innerdiv.appendChild(title);
+        td.appendChild(innerdiv);
+      }
     }
   }
   toggleMap();
 }
 </script>
 </head>
-<body style="margin: 0; background-color: black;" onclick="toggleMap()" onload="generateMap(3, 6, 16, 16)">
+<body onclick="toggleMap()" onload="generateMap(3, 6, 16, 16)">
 <table border="0" cellpadding="0" cellspacing="0" margin="0" id="table"/>
 </body></html>
