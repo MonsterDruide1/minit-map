@@ -7,5 +7,32 @@
     "endX": 205,
     "endY": 160,
     "description": "Starting house"
+  },
+  {
+    "x": 9,
+    "y": 6,
+    "offX": 48,
+    "offY": 32,
+    "endX": 270,
+    "endY": 175,
+    "description": "Hotel"
+  },
+  {
+    "x": 8,
+    "y": 15,
+    "offX": 207,
+    "offY": 112,
+    "endX": 285,
+    "endY": 175,
+    "description": "Island home"
+  },
+  {
+    "x": 13,
+    "y": 9,
+    "offX": 127,
+    "offY": 60,
+    "endX": 205,
+    "endY": 93,
+    "description": "Desert camp"
   }
 ]
