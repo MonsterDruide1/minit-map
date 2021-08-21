@@ -11,6 +11,7 @@ td {
 
 img {
   display: block;
+  image-rendering: pixelated;
 }
 
 .tooltiptext::after {

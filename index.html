@@ -2,6 +2,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="index.css"/>
+<script src="https://unpkg.com/@panzoom/panzoom@4.4.1/dist/panzoom.min.js"></script>
 <script>
 let debug = false;
 
@@ -118,6 +119,7 @@ function drawMap(name) {
 function generateMap(yMin, xMin, yMax, xMax) {
   var table = document.getElementById("table");
   table.style.width = ((xMax-xMin+1)*320)+"px";
+  table.style.height = ((yMax-yMin+1)*240)+"px";
   for(var y = yMin ; y <= yMax ; y++) {
     var tr = table.insertRow();
     for(var x = xMin; x <= xMax ; x++) {
@@ -130,6 +132,8 @@ function generateMap(yMin, xMin, yMax, xMax) {
       td.appendChild(img);
     }
   }
+  const panzoom = Panzoom(document.getElementById('table'), {});
+  document.getElementById('table').addEventListener('wheel', panzoom.zoomWithWheel);
 }
 </script>
 </head>
